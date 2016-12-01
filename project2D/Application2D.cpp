@@ -20,17 +20,19 @@ bool Application2D::startup() {
 
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
-	m_audio = new aie::Audio("./audio/powerup.wav");
-
+	//m_audio = new aie::Audio("./audio/powerup.wav");
+	m_test = new aie::Audio("./audio/PPI.wav");
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
-
+	m_playerPosition = 600;
+	//m_test->play();
 	return true;
 }
 
 void Application2D::shutdown() {
 	
+	delete m_test;
 	delete m_audio;
 	delete m_font;
 	delete m_texture;
@@ -41,27 +43,35 @@ void Application2D::shutdown() {
 void Application2D::update(float deltaTime) {
 
 	m_timer += deltaTime;
+	
 
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
 	// use arrow keys to move camera
-	if (input->isKeyDown(aie::INPUT_KEY_UP))
+	/*if (input->isKeyDown(aie::INPUT_KEY_UP))
 		m_cameraY += 500.0f * deltaTime;
 
 	if (input->isKeyDown(aie::INPUT_KEY_DOWN))
-		m_cameraY -= 500.0f * deltaTime;
+		m_cameraY -= 500.0f * deltaTime;*/
 
-	if (input->isKeyDown(aie::INPUT_KEY_LEFT))
+	/*if (input->isKeyDown(aie::INPUT_KEY_LEFT))
 		m_cameraX -= 500.0f * deltaTime;
 
 	if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
-		m_cameraX += 500.0f * deltaTime;
-
+		m_cameraX += 500.0f * deltaTime;*/
+	if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
+	{
+		m_playerPosition += 7;
+	}
+	if (input->isKeyDown(aie::INPUT_KEY_LEFT))
+	{
+		m_playerPosition -= 7;
+	}
 	// example of audio
-	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
-		m_audio->play();
-
+	//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
+	//	m_audio->play();
+	 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
@@ -84,7 +94,7 @@ void Application2D::draw() {
 
 	// demonstrate spinning sprite
 	m_2dRenderer->setUVRect(0,0,1,1);
-	m_2dRenderer->drawSprite(m_shipTexture, 600, 400, 0, 0, m_timer, 1);
+	m_2dRenderer->drawSprite(m_shipTexture, m_playerPosition, 50, 0, 0, 0, 1);
 
 	// draw a thin line
 	m_2dRenderer->drawLine(300, 300, 600, 400, 2, 1);
@@ -107,6 +117,11 @@ void Application2D::draw() {
 	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
 	m_2dRenderer->drawText(m_font, "Press Space for sound!", 0, 720 - 64);
 
+	aie::Input * input = aie::Input::getInstance();
+	if (input->isKeyDown(aie::INPUT_KEY_SPACE))
+	{
+		m_2dRenderer->drawBox(m_playerPosition, 107, 5, 30, 0, 0);
+	}
 	// done drawing sprites
 	m_2dRenderer->end();
 }

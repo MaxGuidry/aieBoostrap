@@ -1,5 +1,5 @@
 #pragma once
-
+#include "VecMatrix.h"
 #include "Application.h"
 #include "Renderer2D.h"
 #include "Audio.h"
@@ -23,7 +23,13 @@ protected:
 	aie::Texture*		m_shipTexture;
 	aie::Font*			m_font;
 	aie::Audio*			m_audio;
-
+	aie::Audio*			m_test;
+	float m_playerPosition;
 	float m_cameraX, m_cameraY;
 	float m_timer;
+};
+
+class Player
+{
+	Vec2m_playerPosition
 };
