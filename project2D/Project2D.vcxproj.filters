@@ -26,5 +26,8 @@
     <ClInclude Include="Application2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VecMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
