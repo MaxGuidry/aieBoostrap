@@ -51,14 +51,38 @@ public:
 class Bullet
 {
 public:
-	void DrawBullet(aie::Renderer2D *&m_2dRenderer,Player Player1)
+	Bullet * deleteBullet(Bullet bullets[], int numofB)
 	{
-		if (Player1.m_isShooting == true)
+
+		Bullet test[20];
+		for (int i = 0; i < 20; i++)
 		{
-			m_2dRenderer->setRenderColour(1, .5, .1, 1);
-			this->position.y = 107 + this->m_shootTimer;
-			m_2dRenderer->drawBox(this->position.x, 107 + this->m_shootTimer, 5, 30, 0, 0);
+			test[i] = bullets[i];
 		}
+		int size = 0;
+		for (int i = 0; i < numofB; i++)
+		{
+   			if (bullets[i].m_isShooting == true)
+				size++;
+		}
+
+		Bullet *Bullets = new Bullet[size];
+		Bullet tester[20];
+		int counter = 0;
+		for (int i = 0; i < numofB; i++)
+		{
+
+			if (bullets[i].m_isShooting == true)
+			{
+				Bullets[counter] = bullets[i];
+				tester[counter] = bullets[i];
+				counter++;
+			}
+		}
+
+
+  		delete bullets;
+		return Bullets;
 	}
 	bool m_isShooting;
 	float m_shootTimer;
@@ -69,6 +93,7 @@ class Player
 {
 public:
 	Vector2 m_playerPosition;
+	float m_shotCooldown;
 	bool m_isShooting;
 	int m_killCount;
 };
@@ -100,6 +125,8 @@ protected:
 	Enemy * Enemies = new Enemy[20];
 	Enemy * enemyPointer;
 	int numberOfEnemies;
+	int numberOfBullets;
+	Bullet * Bullets = new Bullet[20];
 	float m_backgroundColor1, m_backgroundColor2, m_lastBackgroundColor1, m_lastBackgroundColor2;
 
 };
