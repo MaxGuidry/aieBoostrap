@@ -83,7 +83,10 @@ protected:
 	aie::Renderer2D*	m_2dRenderer;
 	aie::Texture*		m_texture;
 	aie::Texture*		m_shipTexture;
+	aie::Texture*		m_backgroundSpace;
+	aie::Texture*		m_enemyship;
 	aie::Font*			m_font;
+	aie::Font*			m_gameOverFont;
 	aie::Audio*			m_audio;
 	aie::Audio*			m_explosion;
 	aie::Audio*			m_shootSound;
