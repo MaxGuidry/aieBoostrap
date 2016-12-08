@@ -17,7 +17,7 @@ public:
 	}
 	Enemy * deleteEnemy(Enemy enemies[], int numofE)
 	{
-		
+
 		int size = 0;
 		for (int i = 0; i < numofE; i++)
 		{
@@ -28,9 +28,9 @@ public:
 		Enemy *Enemies = new Enemy[size];
 		Enemy tester[20];
 		int counter = 0;
-		for (int i = 0; i < numofE;i++)
+		for (int i = 0; i < numofE; i++)
 		{
-		
+
 			if (enemies[i].m_isAlive == true)
 			{
 				Enemies[counter] = enemies[i];
@@ -38,8 +38,8 @@ public:
 				counter++;
 			}
 		}
-		
-		
+
+
 		delete enemies;
 		return Enemies;
 	}
@@ -62,7 +62,7 @@ public:
 		int size = 0;
 		for (int i = 0; i < numofB; i++)
 		{
-   			if (bullets[i].m_isShooting == true)
+			if (bullets[i].m_isShooting == true)
 				size++;
 		}
 
@@ -81,7 +81,7 @@ public:
 		}
 
 
-  		delete bullets;
+		delete bullets;
 		return Bullets;
 	}
 	bool m_isShooting;
