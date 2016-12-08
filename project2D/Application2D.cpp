@@ -2,7 +2,7 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
-
+#include<fstream>
 Application2D::Application2D()
 {
 }
@@ -23,7 +23,8 @@ bool Application2D::startup()
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
 	//m_audio = new aie::Audio("./audio/powerup.wav");
-	m_test = new aie::Audio("./audio/PPI.wav");
+	m_explosion = new aie::Audio("./audio/Explosion.wav");
+	m_shootSound = new aie::Audio("./audio/Laser.wav");
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
@@ -41,7 +42,10 @@ bool Application2D::startup()
 		Enemies[i] = Enemy();
 		Enemies[i].m_position.x = (Enemies[i].m_height*i*1.5) + 30;
 		Enemies[i].m_position.y = 600;
-		Bullets[i] = Bullet();
+	}
+	for (int i = 0; i < m_MaxBullets; i++)
+	{
+		Magazine[i].position.y = Player1.m_playerPosition.y;
 	}
 	//m_test->play();
 	return true;
@@ -49,8 +53,7 @@ bool Application2D::startup()
 
 void Application2D::shutdown()
 {
-
-	delete m_test;
+	delete m_explosion;
 	delete m_audio;
 	delete m_font;
 	delete m_texture;
@@ -75,50 +78,45 @@ void Application2D::update(float deltaTime)
 	{
 		Player1.m_playerPosition = Player1.m_playerPosition - Vector2(7, 0);
 	}
-	if (input->isKeyDown(aie::INPUT_KEY_SPACE))
+	if (input->isKeyDown(aie::INPUT_KEY_SPACE)&&Player1.m_shotCooldown>=.2)
 	{
-		Bullets[numberOfBullets].position.x = Player1.m_playerPosition.x;
+		Magazine[numberOfBullets].position.x = Player1.m_playerPosition.x;
 		Player1.m_isShooting = true;
-		Bullets[numberOfBullets].m_isShooting = true;
-		Bullets[numberOfBullets].m_shootTimer = 0;
-		(numberOfBullets < 19) ? numberOfBullets++ : numberOfBullets += 0;
+		Magazine[numberOfBullets].m_isShooting = true;
+		Magazine[numberOfBullets].m_shootTimer = 0;
+		(numberOfBullets < m_MaxBullets) ? numberOfBullets++ : numberOfBullets += 0;
+		if (numberOfBullets == m_MaxBullets)
+		{
+			numberOfBullets = 0;
+		}
+		Player1.m_shotCooldown = 0;
 	}
 	if (Player1.m_isShooting == true)
 	{
-		for (int i = 0; i < numberOfBullets; i++)
+		for (int i = 0; i < m_MaxBullets; i++)
 		{
-			Bullets[i].m_shootTimer += 16;
+			Magazine[i].m_shootTimer += 16;
 		}
 	}
-	Bullet testingforerrors1[20];
-	for (int i = 0; i < 20; i++)
+	
+	for (int i = 0; i < m_MaxBullets; i++)
 	{
-		testingforerrors1[i] = Bullets[i];
-	}
-	for (int i = 0; i < numberOfBullets; i++)
-	{
-		if (Bullets[i].m_shootTimer > 620)
+		if (Magazine[i].m_shootTimer > 720)
 		{
-			Bullets[i].m_isShooting = false;
-			Bullets=Bullets[i].deleteBullet(Bullets, numberOfBullets);
-			numberOfBullets--;
+			Magazine[i].m_isShooting = false;
 		}
 	}
-	Bullet testingforerrors[20];
-	for (int i = 0; i < 20; i++)
-	{
-		testingforerrors[i] = Bullets[i];
-	}
+	
 	if (Player1.m_isShooting == true)
 	{
-		Enemy test[20];
-		for (int j = 0; j < numberOfBullets; j++)
+		
+		for (int j = 0; j < m_MaxBullets; j++)
 		{
-			for (int i = 0; i < numberOfEnemies; i++)
+			for (int i = 0; i < m_MaxBullets; i++)
 			{
-				if ((Enemies[i].m_position.x - Enemies[i].m_width < Bullets[j].position.x - 5 && Enemies[i].m_position.x + Enemies[i].m_width > Bullets[j].position.x - 5
-					|| Enemies[i].m_position.x - Enemies[i].m_width < Bullets[j].position.x + 5 && Enemies[i].m_position.x + Enemies[i].m_width > Bullets[j].position.x + 5)
-					&& (Enemies[i].m_position.y - Enemies[i].m_height <Bullets[j].position.y + 30 && Enemies[i].m_position.y + Enemies[i].m_height >Bullets[j].position.y - 30))
+				if ((Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x - 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x - 5
+					|| Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x + 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x + 5)
+					&& (Enemies[i].m_position.y - Enemies[i].m_height <Magazine[j].position.y + 30 && Enemies[i].m_position.y + Enemies[i].m_height >Magazine[j].position.y - 30))
 				{
 					Enemies[i].m_isAlive = false;
 					Enemies = Enemies[i].deleteEnemy(Enemies, numberOfEnemies);
@@ -126,10 +124,11 @@ void Application2D::update(float deltaTime)
 					Player1.m_killCount++;
 
 				}
-				test[i] = Enemies[i];
+				
 			}
 		}
 	}
+	Player1.m_shotCooldown += deltaTime;
 	// example of audio
 	//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 	//	m_audio->play();
@@ -165,13 +164,13 @@ void Application2D::draw()
 	char KillBuffer[32];
 	sprintf_s(KillBuffer, 32, "Kill Count: %i", Player1.m_killCount);
 	m_2dRenderer->drawText(m_font, KillBuffer, 0, 720 - 64);
-	for (int i = 0; i < numberOfBullets; i++)
+	for (int i = 0; i < m_MaxBullets; i++)
 	{
 		if (Player1.m_isShooting == true)
 		{
 			m_2dRenderer->setRenderColour(1, .5, .1, 1);
-			Bullets[i].position.y = 107 + Bullets[i].m_shootTimer;
-			m_2dRenderer->drawBox(Bullets[i].position.x, 107 + Bullets[i].m_shootTimer, 5, 30, 0, 0);
+			Magazine[i].position.y = 107 + Magazine[i].m_shootTimer;
+			m_2dRenderer->drawBox(Magazine[i].position.x, 107 + Magazine[i].m_shootTimer, 5, 30, 0, 0);
 		}
 	}
 

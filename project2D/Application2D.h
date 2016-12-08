@@ -51,39 +51,7 @@ public:
 class Bullet
 {
 public:
-	Bullet * deleteBullet(Bullet bullets[], int numofB)
-	{
-
-		Bullet test[20];
-		for (int i = 0; i < 20; i++)
-		{
-			test[i] = bullets[i];
-		}
-		int size = 0;
-		for (int i = 0; i < numofB; i++)
-		{
-			if (bullets[i].m_isShooting == true)
-				size++;
-		}
-
-		Bullet *Bullets = new Bullet[size];
-		Bullet tester[20];
-		int counter = 0;
-		for (int i = 0; i < numofB; i++)
-		{
-
-			if (bullets[i].m_isShooting == true)
-			{
-				Bullets[counter] = bullets[i];
-				tester[counter] = bullets[i];
-				counter++;
-			}
-		}
-
-
-		delete bullets;
-		return Bullets;
-	}
+	
 	bool m_isShooting;
 	float m_shootTimer;
 	Vector2 position;
@@ -117,16 +85,18 @@ protected:
 	aie::Texture*		m_shipTexture;
 	aie::Font*			m_font;
 	aie::Audio*			m_audio;
-	aie::Audio*			m_test;
+	aie::Audio*			m_explosion;
+	aie::Audio*			m_shootSound;
 	float m_cameraX, m_cameraY;
 	float m_timer;
 	Player Player1;
-	Bullet Fire;
 	Enemy * Enemies = new Enemy[20];
 	Enemy * enemyPointer;
 	int numberOfEnemies;
 	int numberOfBullets;
-	Bullet * Bullets = new Bullet[20];
+	int m_MaxBullets = 5;
+	Bullet Magazine[5];
+	bool m_GameOver;
 	float m_backgroundColor1, m_backgroundColor2, m_lastBackgroundColor1, m_lastBackgroundColor2;
 
 };
