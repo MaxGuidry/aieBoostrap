@@ -18,11 +18,7 @@ public:
 	}
 	Enemy * deleteEnemy(Enemy enemies[], int numofE)
 	{
-		Enemy test[20];
-		for (int i = 0; i < 20; i++)
-		{
-			test[i] = enemies[i];
-		}
+
 		int size = 0;
 		for (int i = 0; i < numofE; i++)
 		{
@@ -42,12 +38,10 @@ public:
 				counter++;
 			}
 		}
-
-
 		delete enemies;
 		return Enemies;
 	}
-	
+
 	Vector2 m_position;
 	float m_height = 40, m_width = 20;
 	bool m_isAlive;
@@ -56,7 +50,7 @@ public:
 class Bullet
 {
 public:
-	
+
 	bool m_isShooting;
 	float m_shootTimer;
 	Vector2 position;
@@ -65,7 +59,26 @@ public:
 class Player
 {
 public:
+
+	void UpdateVelocity(Vector2 acceleration)
+	{
+		m_acceleration = acceleration;
+		m_velocity = m_velocity + (acceleration);
+	}
+	void UpdatePosition(Vector2 velocity)
+	{
+		m_playerPosition = m_playerPosition + velocity;
+	}
+	float UpdateRotation(Vector2 acceleration)
+	{
+
+		return atan(acceleration.y / acceleration.x);
+
+	}
 	Vector2 m_playerPosition;
+	Vector2 m_velocity;
+	Vector2 m_acceleration;
+	float m_maxVelocity;
 	float m_shotCooldown;
 	bool m_isShooting;
 	int m_killCount;
@@ -82,6 +95,7 @@ public:
 
 	virtual void update(float deltaTime);
 	virtual void draw();
+	/*collisionCheck(Player1.m_isShooting, m_MaxBullets, numberOfEnemies, Enemies, Magazine, Player1.m_killCount, m_explosion)
 	bool collisionCheck(bool &PlayerIsShooting, int &MaxBullets, int &numberOfEnemies, Enemy Enemies[], Bullet Magazine[], int &killCount, aie::Audio * Explosion)
 	{
 		if (PlayerIsShooting == true)
@@ -96,7 +110,7 @@ public:
 						&& (Enemies[i].m_position.y - Enemies[i].m_height <Magazine[j].position.y + 30 && Enemies[i].m_position.y + Enemies[i].m_height >Magazine[j].position.y - 30))
 					{
 						Enemies[i].m_isAlive = false;
-						
+						Enemies = Enemies[0].deleteEnemy(Enemies, numberOfEnemies);
 						numberOfEnemies--;
 						killCount++;
 						Explosion->stop();
@@ -108,7 +122,7 @@ public:
 			}
 		}
 		return false;
-	}
+	}*/
 
 protected:
 
