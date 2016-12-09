@@ -1,0 +1,2 @@
+Player position x: 600
+Player position y: 40

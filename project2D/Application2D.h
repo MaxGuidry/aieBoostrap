@@ -11,13 +11,18 @@ class Bullet;
 class Enemy
 {
 public:
+
 	Enemy()
 	{
 		m_isAlive = true;
 	}
 	Enemy * deleteEnemy(Enemy enemies[], int numofE)
 	{
-
+		Enemy test[20];
+		for (int i = 0; i < 20; i++)
+		{
+			test[i] = enemies[i];
+		}
 		int size = 0;
 		for (int i = 0; i < numofE; i++)
 		{
@@ -30,7 +35,6 @@ public:
 		int counter = 0;
 		for (int i = 0; i < numofE; i++)
 		{
-
 			if (enemies[i].m_isAlive == true)
 			{
 				Enemies[counter] = enemies[i];
@@ -43,6 +47,7 @@ public:
 		delete enemies;
 		return Enemies;
 	}
+	
 	Vector2 m_position;
 	float m_height = 40, m_width = 20;
 	bool m_isAlive;
@@ -77,6 +82,33 @@ public:
 
 	virtual void update(float deltaTime);
 	virtual void draw();
+	bool collisionCheck(bool &PlayerIsShooting, int &MaxBullets, int &numberOfEnemies, Enemy Enemies[], Bullet Magazine[], int &killCount, aie::Audio * Explosion)
+	{
+		if (PlayerIsShooting == true)
+		{
+
+			for (int j = 0; j < MaxBullets; j++)
+			{
+				for (int i = 0; i < numberOfEnemies; i++)
+				{
+					if ((Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x - 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x - 5
+						|| Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x + 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x + 5)
+						&& (Enemies[i].m_position.y - Enemies[i].m_height <Magazine[j].position.y + 30 && Enemies[i].m_position.y + Enemies[i].m_height >Magazine[j].position.y - 30))
+					{
+						Enemies[i].m_isAlive = false;
+						
+						numberOfEnemies--;
+						killCount++;
+						Explosion->stop();
+						Explosion->play();
+						return true;
+					}
+
+				}
+			}
+		}
+		return false;
+	}
 
 protected:
 
@@ -90,6 +122,7 @@ protected:
 	aie::Audio*			m_audio;
 	aie::Audio*			m_explosion;
 	aie::Audio*			m_shootSound;
+	std::fstream*		m_file;
 	float m_cameraX, m_cameraY;
 	float m_timer;
 	Player Player1;

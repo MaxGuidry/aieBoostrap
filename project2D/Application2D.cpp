@@ -53,6 +53,8 @@ bool Application2D::startup()
 		Magazine[i].m_shootTimer = 0;
 	}
 	m_GameOver = false;
+	m_file = new std::fstream("test.txt", std::ios_base::app);
+	
 	//m_test->play();
 	return true;
 }
@@ -128,30 +130,9 @@ void Application2D::update(float deltaTime)
 				Magazine[i].m_isShooting = false;
 			}
 		}
-
-		if (Player1.m_isShooting == true)
-		{
-
-			for (int j = 0; j < m_MaxBullets; j++)
-			{
-				for (int i = 0; i < numberOfEnemies; i++)
-				{
-					if ((Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x - 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x - 5
-						|| Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x + 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x + 5)
-						&& (Enemies[i].m_position.y - Enemies[i].m_height <Magazine[j].position.y + 30 && Enemies[i].m_position.y + Enemies[i].m_height >Magazine[j].position.y - 30))
-					{
-						Enemies[i].m_isAlive = false;
-						Enemies = Enemies[i].deleteEnemy(Enemies, numberOfEnemies);
-						numberOfEnemies--;
-						Player1.m_killCount++;
-						m_explosion->stop();
-						m_explosion->play();
-
-					}
-
-				}
-			}
-		}
+		if(collisionCheck(Player1.m_isShooting,m_MaxBullets,numberOfEnemies,Enemies,Magazine,Player1.m_killCount,m_explosion)==true)
+			Enemies = Enemies[0].deleteEnemy(Enemies, numberOfEnemies);
+		
 		Player1.m_shotCooldown += deltaTime;
 		if (Player1.m_killCount == 20)
 		{
@@ -164,10 +145,13 @@ void Application2D::update(float deltaTime)
 		shutdown();
 		startup();
 	}
-
-	// example of audio
-	//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
-	//	m_audio->play();
+	m_file->open("test.txt", std::ios_base::out);
+	if (m_file->is_open())
+	{
+		*m_file << "Player position x: " << Player1.m_playerPosition.x << std::endl ;
+		*m_file << "Player position y: " << Player1.m_playerPosition.y <<std::endl;
+		m_file->close();
+	}
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
