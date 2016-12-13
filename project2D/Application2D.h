@@ -8,6 +8,15 @@ class Player;
 class Enemy;
 class Bullet;
 
+class Bullet
+{
+public:
+
+	bool m_isShooting;
+	float m_shootTimer;
+	Vector2 position;
+
+};
 class Enemy
 {
 public:
@@ -41,26 +50,18 @@ public:
 		delete enemies;
 		return Enemies;
 	}
-
+	Bullet shot;
 	Vector2 m_position;
 	float m_height = 40, m_width = 20;
 	bool m_isAlive;
 };
 
-class Bullet
-{
-public:
 
-	bool m_isShooting;
-	float m_shootTimer;
-	Vector2 position;
-
-};
 class Player
 {
 public:
 
-	void UpdateVelocity(Vector2 acceleration)
+	/*void UpdateVelocity(Vector2 acceleration)
 	{
 		m_acceleration = acceleration;
 		m_velocity = m_velocity + (acceleration);
@@ -71,10 +72,9 @@ public:
 	}
 	float UpdateRotation(Vector2 acceleration)
 	{
-
 		return atan(acceleration.y / acceleration.x);
-
 	}
+	*/
 	Vector2 m_playerPosition;
 	Vector2 m_velocity;
 	Vector2 m_acceleration;
@@ -140,13 +140,14 @@ protected:
 	float m_cameraX, m_cameraY;
 	float m_timer;
 	Player Player1;
-	Enemy * Enemies = new Enemy[20];
+	Enemy * Enemies = new Enemy[21];
 	Enemy * enemyPointer;
 	int numberOfEnemies;
 	int numberOfBullets;
 	int m_MaxBullets = 5;
 	Bullet Magazine[5];
 	bool m_GameOver;
+	bool m_lose;
 	float m_backgroundColor1, m_backgroundColor2, m_lastBackgroundColor1, m_lastBackgroundColor2;
 
 };
