@@ -61,7 +61,7 @@ class Player
 {
 public:
 
-	/*void UpdateVelocity(Vector2 acceleration)
+	void UpdateVelocity(Vector2 acceleration)
 	{
 		m_acceleration = acceleration;
 		m_velocity = m_velocity + (acceleration);
@@ -74,7 +74,7 @@ public:
 	{
 		return atan(acceleration.y / acceleration.x);
 	}
-	*/
+	
 	Vector2 m_playerPosition;
 	Vector2 m_velocity;
 	Vector2 m_acceleration;
@@ -148,6 +148,10 @@ protected:
 	Bullet Magazine[5];
 	bool m_GameOver;
 	bool m_lose;
+	int m_GameTimer;
+	float test;
+
+	bool gameStarted;
 	float m_backgroundColor1, m_backgroundColor2, m_lastBackgroundColor1, m_lastBackgroundColor2;
 
 };
