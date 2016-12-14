@@ -24,8 +24,13 @@ bool Application2D::startup()
 	m_enemyship = new aie::Texture("./textures/spaceship.png");
 	m_explosion = new aie::Audio("./audio/Explosion.wav");
 	m_shootSound = new aie::Audio("./audio/Laser.wav");
-	m_explosion->setGain(.8);
-	m_shootSound->setGain(.2);
+	m_gameMusic = new aie::Audio("./audio/BackgroundSpace.wav");
+	m_deathMusic = new aie::Audio("./audio/DeathMusic.wav");
+	m_winMusic = new aie::Audio("./audio/WinMusic.wav");
+	m_winMusic->setGain(1.9);
+	m_deathMusic->setGain(1.5);
+	m_explosion->setGain(.5);
+	m_shootSound->setGain(.1);
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
@@ -39,7 +44,6 @@ bool Application2D::startup()
 	numberOfBullets = 0;
 	numberOfEnemies = 21;
 	Player1.m_shotCooldown = 0;
-	m_GameTimer = 13;
 	Enemies = new Enemy[numberOfEnemies];
 	for (int i = 0; i < numberOfEnemies; i++)
 	{
@@ -62,13 +66,16 @@ bool Application2D::startup()
 	m_lose = false;
 	gameStarted = false;
 	m_file = new std::fstream("test.txt", std::ios_base::app);
-
+	
 	test = 0;
 	return true;
 }
 
 void Application2D::shutdown()
 {
+	delete m_winMusic;
+	delete m_deathMusic;
+	delete m_gameMusic;
 	delete m_explosion;
 	delete m_font;
 	delete m_texture;
@@ -89,17 +96,24 @@ void Application2D::update(float deltaTime)
 	
 	if (gameStarted == false)
 	{
-		if ( input->getMouseX() < 730 && input->getMouseX() > 570 && input->getMouseY() > 110 && input->getMouseY() < 180)
+		
+		if (input->wasMouseButtonPressed(INPUT_MOUSE)&&input->getMouseX() < 760 && input->getMouseX() > 530 && input->getMouseY() > 650 && input->getMouseY() < 720)
 		{
 			gameStarted = true;
-			m_GameTimer = 13;
+			m_GameTimer = 12;
 		}
-		if (input->getMouseX() < 750 && input->getMouseX() > 530 && input->getMouseY() > 310 && input->getMouseY() < 380)
+
+		if (input->wasMouseButtonPressed(INPUT_MOUSE)&& input->getMouseX() < 730 && input->getMouseX() > 570 && input->getMouseY() > 110 && input->getMouseY() < 180)
+		{
+			gameStarted = true;
+			m_GameTimer = 15;
+		}
+		if (input->wasMouseButtonPressed(INPUT_MOUSE)&&input->getMouseX() < 750 && input->getMouseX() > 530 && input->getMouseY() > 310 && input->getMouseY() < 380)
 		{
 			gameStarted = true;
 			m_GameTimer = 20;
 		}
-		if (input->getMouseX() < 730 && input->getMouseX() > 570 && input->getMouseY() > 510 && input->getMouseY() < 580)
+		if (input->wasMouseButtonPressed(INPUT_MOUSE)&&input->getMouseX() < 730 && input->getMouseX() > 570 && input->getMouseY() > 510 && input->getMouseY() < 580)
 		{
 			gameStarted = true;
 			m_GameTimer = 25;
@@ -108,6 +122,8 @@ void Application2D::update(float deltaTime)
 	else {
 		if (m_GameOver == false)
 		{
+			m_gameMusic->play();
+			m_gameMusic->setLooping(true);
 			test += deltaTime;
 			// input example
 			if (test >= 1)
@@ -198,17 +214,25 @@ void Application2D::update(float deltaTime)
 				{
 					m_GameOver = true;
 					m_lose = true;
+					m_deathMusic->play();
 				}
 			}
 			Player1.m_shotCooldown += deltaTime;
 			if (Player1.m_killCount == 21)
 			{
 				m_GameOver = true;
+				m_winMusic->play();
 			}
 
 		}
+		else
+		{
+			m_gameMusic->stop();
+		}
 		if (input->isKeyDown(aie::INPUT_KEY_R) && m_GameOver == true)
 		{
+			m_winMusic->stop();
+			m_deathMusic->stop();
 			shutdown();
 			startup();
 		}
@@ -273,6 +297,9 @@ void Application2D::draw()
 	m_2dRenderer->begin();
 	if (gameStarted == false)
 	{
+		char impossible[15];
+		sprintf_s(impossible, 15, "Impossible");
+		m_2dRenderer->drawText(m_font, impossible, 575, 670);
 		char easy[10];
 		sprintf_s(easy, 10, "Easy");
 		m_2dRenderer->drawText(m_font, easy, 600, 550);

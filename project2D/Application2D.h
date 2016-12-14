@@ -136,6 +136,9 @@ protected:
 	aie::Audio*			m_audio;
 	aie::Audio*			m_explosion;
 	aie::Audio*			m_shootSound;
+	aie::Audio*			m_gameMusic;
+	aie::Audio*			m_deathMusic;
+	aie::Audio*			m_winMusic;
 	std::fstream*		m_file;
 	float m_cameraX, m_cameraY;
 	float m_timer;
