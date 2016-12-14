@@ -1,2 +1,2 @@
-Player position x: 661
+Player position x: 1235
 Player position y: 40

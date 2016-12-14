@@ -27,9 +27,9 @@ bool Application2D::startup()
 	m_gameMusic = new aie::Audio("./audio/BackgroundSpace.wav");
 	m_deathMusic = new aie::Audio("./audio/DeathMusic.wav");
 	m_winMusic = new aie::Audio("./audio/WinMusic.wav");
-	m_winMusic->setGain(1.9);
-	m_deathMusic->setGain(1.5);
-	m_explosion->setGain(.5);
+	m_winMusic->setGain(.8);
+	m_deathMusic->setGain(.8);
+	m_explosion->setGain(.3);
 	m_shootSound->setGain(.1);
 	m_cameraX = 0;
 	m_cameraY = 0;
@@ -299,7 +299,7 @@ void Application2D::draw()
 	{
 		char impossible[15];
 		sprintf_s(impossible, 15, "Impossible");
-		m_2dRenderer->drawText(m_font, impossible, 575, 670);
+		m_2dRenderer->drawText(m_font, impossible, 557, 670);
 		char easy[10];
 		sprintf_s(easy, 10, "Easy");
 		m_2dRenderer->drawText(m_font, easy, 600, 550);
