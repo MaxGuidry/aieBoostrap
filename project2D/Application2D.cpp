@@ -361,7 +361,6 @@ void Application2D::draw()
 		}
 		else
 		{
-
 			this->setBackgroundColour(0, 0, 0, 1);
 			char GameOver[32];
 			sprintf_s(GameOver, 32, "Game Over!");
