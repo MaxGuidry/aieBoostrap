@@ -34,7 +34,6 @@ public:
 			if (enemies[i].m_isAlive == true)
 				size++;
 		}
-
 		Enemy *Enemies = new Enemy[size];
 		Enemy tester[20];
 		int counter = 0;
