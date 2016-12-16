@@ -59,11 +59,18 @@ public:
 class Player
 {
 public:
-
 	void UpdateVelocity(Vector2 acceleration)
 	{
 		m_acceleration = acceleration;
-		m_velocity = m_velocity + (acceleration);
+		if (m_velocity.Magnitude() < m_maxVelocity)
+		{
+			m_velocity = m_velocity + (acceleration);
+		}
+		if (m_velocity.Magnitude() >= m_maxVelocity&&!(acceleration.Normalize()==m_velocity.Normalize()))
+		{
+			m_velocity = m_velocity + acceleration;
+		}
+	
 	}
 	void UpdatePosition(Vector2 velocity)
 	{
@@ -73,7 +80,7 @@ public:
 	{
 		return atan(acceleration.y / acceleration.x);
 	}
-	
+
 	Vector2 m_playerPosition;
 	Vector2 m_velocity;
 	Vector2 m_acceleration;

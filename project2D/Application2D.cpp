@@ -66,7 +66,7 @@ bool Application2D::startup()
 	m_lose = false;
 	gameStarted = false;
 	m_file = new std::fstream("test.txt", std::ios_base::app);
-	
+	Player1.m_maxVelocity=300;
 	test = 0;
 	return true;
 }
@@ -93,193 +93,192 @@ void Application2D::update(float deltaTime)
 {
 	aie::Input* input = aie::Input::getInstance();
 	m_timer += deltaTime;
-	
+
 	if (gameStarted == false)
 	{
-		
-		if (input->wasMouseButtonPressed(INPUT_MOUSE)&&input->getMouseX() < 760 && input->getMouseX() > 530 && input->getMouseY() > 650 && input->getMouseY() < 720)
+
+		if (input->wasMouseButtonPressed(INPUT_MOUSE) && input->getMouseX() < 760 && input->getMouseX() > 530 && input->getMouseY() > 650 && input->getMouseY() < 720)
 		{
 			gameStarted = true;
 			m_GameTimer = 12;
 		}
 
-		if (input->wasMouseButtonPressed(INPUT_MOUSE)&& input->getMouseX() < 730 && input->getMouseX() > 570 && input->getMouseY() > 110 && input->getMouseY() < 180)
+		if (input->wasMouseButtonPressed(INPUT_MOUSE) && input->getMouseX() < 730 && input->getMouseX() > 570 && input->getMouseY() > 110 && input->getMouseY() < 180)
 		{
 			gameStarted = true;
 			m_GameTimer = 15;
 		}
-		if (input->wasMouseButtonPressed(INPUT_MOUSE)&&input->getMouseX() < 750 && input->getMouseX() > 530 && input->getMouseY() > 310 && input->getMouseY() < 380)
+		if (input->wasMouseButtonPressed(INPUT_MOUSE) && input->getMouseX() < 750 && input->getMouseX() > 530 && input->getMouseY() > 310 && input->getMouseY() < 380)
 		{
 			gameStarted = true;
 			m_GameTimer = 20;
 		}
-		if (input->wasMouseButtonPressed(INPUT_MOUSE)&&input->getMouseX() < 730 && input->getMouseX() > 570 && input->getMouseY() > 510 && input->getMouseY() < 580)
+		if (input->wasMouseButtonPressed(INPUT_MOUSE) && input->getMouseX() < 730 && input->getMouseX() > 570 && input->getMouseY() > 510 && input->getMouseY() < 580)
 		{
 			gameStarted = true;
 			m_GameTimer = 25;
 		}
 	}
-	else {
-		if (m_GameOver == false)
-		{
-			m_gameMusic->play();
-			m_gameMusic->setLooping(true);
-			test += deltaTime;
-			// input example
-			if (test >= 1)
-			{
-				test = 0;
-				m_GameTimer--;
-			}
-			if (m_GameTimer == 0)
-			{
-				m_GameOver = true;
-				m_lose = true;
-			}
+	//else {
+	//	if (m_GameOver == false)
+	//	{
+	//		m_gameMusic->play();
+	//		m_gameMusic->setLooping(true);
+	//		test += deltaTime;
+	//		// input example
+	//		if (test >= 1)
+	//		{
+	//			test = 0;
+	//			m_GameTimer--;
+	//		}
+	//		if (m_GameTimer == 0)
+	//		{
+	//			m_GameOver = true;
+	//			m_lose = true;
+	//		}
 
-			for (int i = 0; i < m_MaxBullets; i++)
-			{
-				if (Magazine[i].m_isShooting == false)
-				{
-					Magazine[i].position.x = Player1.m_playerPosition.x;
-				}
-			}
-			if (input->isKeyDown(aie::INPUT_KEY_RIGHT) && Player1.m_playerPosition.x < 1230)//change to variable storing window size
-			{
-				Player1.m_playerPosition = Player1.m_playerPosition + Vector2(7, 0);
-			}
-			if (input->isKeyDown(aie::INPUT_KEY_LEFT) && Player1.m_playerPosition.x > 50)
-			{
-				Player1.m_playerPosition = Player1.m_playerPosition - Vector2(7, 0);
-			}
-			if (input->isKeyDown(aie::INPUT_KEY_SPACE) && Player1.m_shotCooldown >= .26)
-			{
-				Magazine[numberOfBullets].position.x = Player1.m_playerPosition.x;
-				Player1.m_isShooting = true;
-				Magazine[numberOfBullets].m_isShooting = true;
-				Magazine[numberOfBullets].m_shootTimer = 0;
-				(numberOfBullets < m_MaxBullets) ? numberOfBullets++ : numberOfBullets += 0;
-				if (numberOfBullets == m_MaxBullets)
-				{
-					numberOfBullets = 0;
-				}
-				Player1.m_shotCooldown = 0;
-				m_shootSound->stop();
-				m_shootSound->play();
-			}
-			if (Player1.m_isShooting == true)
-			{
-				for (int i = 0; i < m_MaxBullets; i++)
-				{
-					if (Magazine[i].m_isShooting == true)
-						Magazine[i].m_shootTimer += 16;
-				}
-			}
+	//		for (int i = 0; i < m_MaxBullets; i++)
+	//		{
+	//			if (Magazine[i].m_isShooting == false)
+	//			{
+	//				Magazine[i].position.x = Player1.m_playerPosition.x;
+	//			}
+	//		}
+	//		if (input->isKeyDown(aie::INPUT_KEY_RIGHT) && Player1.m_playerPosition.x < 1230)//change to variable storing window size
+	//		{
+	//			Player1.m_playerPosition = Player1.m_playerPosition + Vector2(7, 0);
+	//		}
+	//		if (input->isKeyDown(aie::INPUT_KEY_LEFT) && Player1.m_playerPosition.x > 50)
+	//		{
+	//			Player1.m_playerPosition = Player1.m_playerPosition - Vector2(7, 0);
+	//		}
+	//		if (input->isKeyDown(aie::INPUT_KEY_SPACE) && Player1.m_shotCooldown >= .26)
+	//		{
+	//			Magazine[numberOfBullets].position.x = Player1.m_playerPosition.x;
+	//			Player1.m_isShooting = true;
+	//			Magazine[numberOfBullets].m_isShooting = true;
+	//			Magazine[numberOfBullets].m_shootTimer = 0;
+	//			(numberOfBullets < m_MaxBullets) ? numberOfBullets++ : numberOfBullets += 0;
+	//			if (numberOfBullets == m_MaxBullets)
+	//			{
+	//				numberOfBullets = 0;
+	//			}
+	//			Player1.m_shotCooldown = 0;
+	//			m_shootSound->stop();
+	//			m_shootSound->play();
+	//		}
+	//		if (Player1.m_isShooting == true)
+	//		{
+	//			for (int i = 0; i < m_MaxBullets; i++)
+	//			{
+	//				if (Magazine[i].m_isShooting == true)
+	//					Magazine[i].m_shootTimer += 16;
+	//			}
+	//		}
 
-			for (int i = 0; i < m_MaxBullets; i++)
-			{
-				if (Magazine[i].m_shootTimer > 720)
-				{
-					Magazine[i].m_isShooting = false;
-				}
-			}
+	//		for (int i = 0; i < m_MaxBullets; i++)
+	//		{
+	//			if (Magazine[i].m_shootTimer > 720)
+	//			{
+	//				Magazine[i].m_isShooting = false;
+	//			}
+	//		}
 
-			if (Player1.m_isShooting == true)
-			{
+	//		if (Player1.m_isShooting == true)
+	//		{
 
-				for (int j = 0; j < m_MaxBullets; j++)
-				{
-					Magazine[j].position.y = 107 + Magazine[j].m_shootTimer;
+	//			for (int j = 0; j < m_MaxBullets; j++)
+	//			{
+	//				Magazine[j].position.y = 107 + Magazine[j].m_shootTimer;
 
-					for (int i = 0; i < numberOfEnemies; i++)
-					{
-						if ((Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x - 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x - 5
-							|| Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x + 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x + 5)
-							&& (Enemies[i].m_position.y - Enemies[i].m_height <Magazine[j].position.y + 30 && Enemies[i].m_position.y + Enemies[i].m_height >Magazine[j].position.y - 30))
-						{
-							Enemies[i].m_isAlive = false;
-							Enemies = Enemies[0].deleteEnemy(Enemies, numberOfEnemies);
-							numberOfEnemies--;
-							Player1.m_killCount++;
-							m_explosion->stop();
-							m_explosion->play();
-						}
-					}
-				}
-			}
-			for (int i = 0; i < numberOfEnemies; i++)
-			{
+	//				for (int i = 0; i < numberOfEnemies; i++)
+	//				{
+	//					if ((Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x - 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x - 5
+	//						|| Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x + 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x + 5)
+	//						&& (Enemies[i].m_position.y - Enemies[i].m_height <Magazine[j].position.y + 30 && Enemies[i].m_position.y + Enemies[i].m_height >Magazine[j].position.y - 30))
+	//					{
+	//						Enemies[i].m_isAlive = false;
+	//						Enemies = Enemies[0].deleteEnemy(Enemies, numberOfEnemies);
+	//						numberOfEnemies--;
+	//						Player1.m_killCount++;
+	//						m_explosion->stop();
+	//						m_explosion->play();
+	//					}
+	//				}
+	//			}
+	//		}
+	//		for (int i = 0; i < numberOfEnemies; i++)
+	//		{
 
-				if (Enemies[i].shot.position.y - 15 < Player1.m_playerPosition.y + m_shipTexture->getHeight() / 2 && Enemies[i].shot.position.x > Player1.m_playerPosition.x - m_shipTexture->getWidth() / 2 && Enemies[i].shot.position.x < Player1.m_playerPosition.x + m_shipTexture->getWidth() / 2)
-				{
-					m_GameOver = true;
-					m_lose = true;
-					m_deathMusic->play();
-				}
-			}
-			Player1.m_shotCooldown += deltaTime;
-			if (Player1.m_killCount == 21)
-			{
-				m_GameOver = true;
-				m_winMusic->play();
-			}
+	//			if (Enemies[i].shot.position.y - 15 < Player1.m_playerPosition.y + m_shipTexture->getHeight() / 2 && Enemies[i].shot.position.x > Player1.m_playerPosition.x - m_shipTexture->getWidth() / 2 && Enemies[i].shot.position.x < Player1.m_playerPosition.x + m_shipTexture->getWidth() / 2)
+	//			{
+	//				m_GameOver = true;
+	//				m_lose = true;
+	//				m_deathMusic->play();
+	//			}
+	//		}
+	//		Player1.m_shotCooldown += deltaTime;
+	//		if (Player1.m_killCount == 21)
+	//		{
+	//			m_GameOver = true;
+	//			m_winMusic->play();
+	//		}
 
-		}
-		else
-		{
-			m_gameMusic->stop();
-		}
-		if (input->isKeyDown(aie::INPUT_KEY_R) && m_GameOver == true)
-		{
-			m_winMusic->stop();
-			m_deathMusic->stop();
-			shutdown();
-			startup();
-		}
-		m_file->open("test.txt", std::ios_base::out);
-		if (m_file->is_open())
-		{
-			*m_file << "Player position x: " << Player1.m_playerPosition.x << std::endl;
-			*m_file << "Player position y: " << Player1.m_playerPosition.y << std::endl;
-			m_file->close();
-		}
+	//	}
+	//	else
+	//	{
+	//		m_gameMusic->stop();
+	//	}
+	//	if (input->isKeyDown(aie::INPUT_KEY_R) && m_GameOver == true)
+	//	{
+	//		m_winMusic->stop();
+	//		m_deathMusic->stop();
+	//		shutdown();
+	//		startup();
+	//	}
+	//	m_file->open("test.txt", std::ios_base::out);
+	//	if (m_file->is_open())
+	//	{
+	//		*m_file << "Player position x: " << Player1.m_playerPosition.x << std::endl;
+	//		*m_file << "Player position y: " << Player1.m_playerPosition.y << std::endl;
+	//		m_file->close();
+	//	}
 
-		for (int i = 0; i < numberOfEnemies; i++)
-		{
-			int random = rand() % 95;
-			if (random == 2 && Enemies[i].shot.m_isShooting == false)
-			{
-				Enemies[i].shot.m_isShooting = true;
-			}
-			if (Enemies[i].shot.position.y < 0)
-			{
-				Enemies[i].shot.m_isShooting = false;
-				Enemies[i].shot.m_shootTimer = 0;
-				Enemies[i].shot.position.y = Enemies[i].m_position.y;
-			}
-			if (Enemies[i].shot.m_isShooting == true)
-			{
-				Enemies[i].shot.position.y -= 10;
-				//Enemies[i].shot.m_shootTimer -= 8;
-			}
-		}
+	//	for (int i = 0; i < numberOfEnemies; i++)
+	//	{
+	//		int random = rand() % 95;
+	//		if (random == 2 && Enemies[i].shot.m_isShooting == false)
+	//		{
+	//			Enemies[i].shot.m_isShooting = true;
+	//		}
+	//		if (Enemies[i].shot.position.y < 0)
+	//		{
+	//			Enemies[i].shot.m_isShooting = false;
+	//			Enemies[i].shot.m_shootTimer = 0;
+	//			Enemies[i].shot.position.y = Enemies[i].m_position.y;
+	//		}
+	//		if (Enemies[i].shot.m_isShooting == true)
+	//		{
+	//			Enemies[i].shot.position.y -= 10;
+	//			//Enemies[i].shot.m_shootTimer -= 8;
+	//		}
+	//	}
 
-		//Vector2 mousePosition = Vector2(input->getMouseX(), input->getMouseY());
-		//Vector2 directionOfMovement = (mousePosition - Player1.m_playerPosition);
-		//float DistanceFromMouse = directionOfMovement.Magnitude();
-		////Vector2 directionOfMovement = Vector2(1280 / 2, 720 / 2) - Player1.m_playerPosition;
-		//directionOfMovement.Normalize();
+	Vector2 mousePosition = Vector2(input->getMouseX(), input->getMouseY());
+	Vector2 directionOfForce = (mousePosition - Player1.m_playerPosition);
+	float DistanceFromMouse = directionOfForce.Magnitude();
+	//Vector2 directionOfMovement = Vector2(1280 / 2, 720 / 2) - Player1.m_playerPosition;
+	directionOfForce.Normalize();
 
-		//Player1.UpdateVelocity(directionOfMovement*deltaTime);
-		//
-		//if (DistanceFromMouse <= 100.0f)
-		//{
+	Player1.UpdateVelocity(directionOfForce*DistanceFromMouse*deltaTime*.005);
+	float test = directionOfForce.DotProduct(Player1.m_velocity);
+	if (DistanceFromMouse <= 200.0f)
+	{
+		Player1.UpdateVelocity(Player1.m_velocity.Normalize()*-1 *(1/DistanceFromMouse) *deltaTime);
+	} 
+	Player1.UpdatePosition(Player1.m_velocity *deltaTime);
 
-		//	Player1.UpdateVelocity(directionOfMovement*DistanceFromMouse*-.5* deltaTime);
-		//}
-		//Player1.UpdatePosition(Player1.m_velocity *deltaTime);
-		// exit the application
-	}
+	//} // You a hoe - Donray
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
 }
