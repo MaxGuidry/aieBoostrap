@@ -66,7 +66,9 @@ bool Application2D::startup()
 	m_lose = false;
 	gameStarted = false;
 	m_file = new std::fstream("test.txt", std::ios_base::app);
-	Player1.m_maxVelocity=300;
+	Player1.m_maxVelocity = 500;
+	Player1.m_velocity = Vector2(0, 0);
+	Player1.m_acceleration = Vector2(0, 0);
 	test = 0;
 	return true;
 }
@@ -268,14 +270,28 @@ void Application2D::update(float deltaTime)
 	Vector2 directionOfForce = (mousePosition - Player1.m_playerPosition);
 	float DistanceFromMouse = directionOfForce.Magnitude();
 	//Vector2 directionOfMovement = Vector2(1280 / 2, 720 / 2) - Player1.m_playerPosition;
-	directionOfForce.Normalize();
-
-	Player1.UpdateVelocity(directionOfForce*DistanceFromMouse*deltaTime*.005);
-	float test = directionOfForce.DotProduct(Player1.m_velocity);
-	if (DistanceFromMouse <= 200.0f)
+	directionOfForce = directionOfForce.Normalize();
+	
+	if (DistanceFromMouse <= 900.0f)
 	{
-		Player1.UpdateVelocity(Player1.m_velocity.Normalize()*-1 *(1/DistanceFromMouse) *deltaTime);
-	} 
+		if (DistanceFromMouse < 15)
+		{
+			Player1.UpdateAcceleration(Player1.m_velocity*-deltaTime);
+			
+		}
+		else
+		{
+			Player1.UpdateAcceleration((directionOfForce*DistanceFromMouse) - (directionOfForce*(1 / DistanceFromMouse))*deltaTime);
+		}
+		Player1.UpdateVelocity(Player1.m_acceleration*deltaTime * 500);
+
+	}
+	else
+	{
+		Player1.UpdateAcceleration(directionOfForce*DistanceFromMouse*deltaTime);
+		Player1.UpdateVelocity(Player1.m_acceleration*deltaTime * 500);
+	}
+
 	Player1.UpdatePosition(Player1.m_velocity *deltaTime);
 
 	//} // You a hoe - Donray
@@ -309,7 +325,8 @@ void Application2D::draw()
 		sprintf_s(hard, 10, "Hard");
 		m_2dRenderer->drawText(m_font, hard, 600, 150);
 	}
-	else {
+	else
+	{
 
 		if (m_GameOver == false)
 		{
@@ -321,11 +338,15 @@ void Application2D::draw()
 			// demonstrate spinning sprite
 			m_2dRenderer->setUVRect(0, 0, 1, 1);
 			m_2dRenderer->drawSprite(m_shipTexture, Player1.m_playerPosition.x, Player1.m_playerPosition.y, 0, 0, 0, 1);
-			m_2dRenderer->drawLine(
-				Player1.m_playerPosition.x, Player1.m_playerPosition.y,
-				Player1.m_playerPosition.x + Player1.m_velocity.x,
-				Player1.m_playerPosition.y + Player1.m_velocity.y,
-				1);
+			/*	m_2dRenderer->drawLine(
+					Player1.m_playerPosition.x, Player1.m_playerPosition.y,
+					Player1.m_playerPosition.x + Player1.m_velocity.x,
+					Player1.m_playerPosition.y + Player1.m_velocity.y,
+					1);
+				m_2dRenderer->drawLine(Player1.m_playerPosition.x, Player1.m_playerPosition.y,
+					Player1.m_playerPosition.x + Player1.m_acceleration.x * 50,
+					Player1.m_playerPosition.y + Player1.m_acceleration.y * 50,
+					1);*/
 			m_2dRenderer->drawSprite(m_backgroundSpace, 620, 720 / 2, 1320, 720, 0, 1);
 			// output some text, uses the last used colour
 			char fps[32];
