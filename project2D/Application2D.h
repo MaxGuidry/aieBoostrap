@@ -61,19 +61,19 @@ class Player
 public:
 	void UpdateAcceleration(Vector2 Force)
 	{
-		m_acceleration = Force;
+		m_acceleration =  Force;
 	}
 	void UpdateVelocity(Vector2 acceleration)
 	{
-
+		
 		m_velocity = m_velocity + (acceleration);
 		if (m_velocity.Magnitude() > m_maxVelocity)
 		{
-			m_velocity = m_velocity.Normalize();
+			m_velocity=m_velocity.Normalize();
 			m_velocity = m_velocity*m_maxVelocity;
 		}
-
-
+		
+	
 	}
 	void UpdatePosition(Vector2 velocity)
 	{
@@ -92,114 +92,8 @@ public:
 	bool m_isShooting;
 	int m_killCount;
 };
-class boid
-{
 
-public:
-	Vector2 randomForce;
-	boid() {};
-	boid(Vector2 position, Vector2 velocity) :m_position(position), m_velocity(velocity) 
-	{
-		
-		randomForce = Vector2(0, 0);
-		m_forceapplied = Vector2(0, 0); 
-	};
-	
-	Vector2 getPosition()
-	{
-		return m_position;
-	}
-	void moveBoids(boid b[],float deltaTime)
-	{
-		for (int i = 0; i < 20; i++)
-		{
-			rule1(b,b[i]);
-			rule2(b, b[i],deltaTime);
-			rule3(b, b[i],deltaTime);
-		}
-		updateVelocity(deltaTime);
-		updatePosition(deltaTime);
-		m_forceapplied = Vector2(0, 0);
-	}
-	bool operator !=(boid b)
-	{
-		if (m_position == b.m_position&&m_velocity == b.m_velocity&&m_forceapplied == m_forceapplied)
-			return false;
-		return true;
-	}
-	void addForce(Vector2 force)
-	{
-		m_forceapplied = m_forceapplied + force*50;
-	}
-private:
-	void rule1(boid b[], boid current)
-	{
-		Vector2 COM = Vector2(0, 0);
-		for (int i = 0; i < 20; i++)
-		{
-			if (b[i] != current)
-			{
-				COM = COM + b[i].m_position;
-			}
-		}
-		COM = COM *(1.0f / 19.0f);
-		m_position = m_position + ((COM - current.m_position)*(1.0f / 100.0f));
-	}
-	void rule2(boid b[], boid current,float deltaTime)
-	{
-		Vector2 c = Vector2(0,0);
-		for (int i = 0; i < 20; i++)
-		{
-			if (b[i] != current)
-			{
-				if ((b[i].m_position - current.m_position).Magnitude() < 100)
-				{
-					addForce((b[i].m_position - current.m_position)*deltaTime*14.0f);
-					/* c =c-( b[i].m_position - current.m_position);
-					addForce(c*deltaTime);*/
-					
-				}
-			}
-		}
-
-	}
-	void rule3(boid b[], boid current,float deltaTime)
-	{
-		Vector2 AV = Vector2(0, 0);
-		for (int i = 0; i < 20; i++)
-		{
-			if (b[i] != current)
-			{
-				AV = AV + b[i].m_velocity;
-			}
-		}
-		AV = AV*(1.0f / 19.0f)*(1.0f / 20.0f);
-		addForce(AV*deltaTime);
-	}
-	void updateVelocity(float deltaTime)
-	{
-		
-		m_velocity = m_velocity + (m_forceapplied*deltaTime);
-		if (m_velocity.Magnitude() >= m_maxVelo)
-		{
-			m_velocity = m_velocity.Normalize();
-			m_velocity = m_velocity*m_maxVelo;
-		}
-	}
-	void updatePosition(float deltaTime)
-	{
-		m_position = m_position + (m_velocity*deltaTime);
-	}
-	Vector2 m_position;
-	Vector2 m_velocity;
-	Vector2 m_forceapplied;
-	float m_maxVelo = 250;
-	
-
-};
-
-class Application2D : public aie::Application
-{
+class Application2D : public aie::Application {
 public:
 
 	Application2D();
@@ -239,7 +133,6 @@ public:
 		return false;
 	}*/
 
-
 protected:
 
 	aie::Renderer2D*	m_2dRenderer;
@@ -269,7 +162,7 @@ protected:
 	bool m_lose;
 	int m_GameTimer;
 	float test;
-	boid boids[20];
+
 	bool gameStarted;
 	float m_backgroundColor1, m_backgroundColor2, m_lastBackgroundColor1, m_lastBackgroundColor2;
 
