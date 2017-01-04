@@ -303,17 +303,31 @@ void Application2D::update(float deltaTime)
 		{
 			Vector2 directionOfForce = mousePosition - boids[i].getPosition();
 			float DistanceFromMouse = directionOfForce.Magnitude();
-			boids[i].addForce(directionOfForce.Normalize()*DistanceFromMouse*deltaTime);
+			if (DistanceFromMouse < 200)
+				boids[i].addForce((directionOfForce.Normalize()*DistanceFromMouse) - (directionOfForce.Normalize()*(1 / DistanceFromMouse))*deltaTime);
+			else
+			{
+				boids[i].addForce((directionOfForce.Normalize()*DistanceFromMouse)*deltaTime);
+			}
 			if (test >= .5)
 			{
 				for (int i = 0; i < 20; i++)
 				{
-					boids[i].randomForce = Vector2((rand() % 500) - 250, (rand() % 500) - 250);
+					if (DistanceFromMouse < 200)
+						boids[i].randomForce = Vector2((rand() % 5000) - 2500, (rand() % 5000) - 2500);
 				}
 				test = 0;
 			}
-			boids[i].addForce(boids[i].randomForce*deltaTime);
+			if (DistanceFromMouse < 200)
+				boids[i].addForce(boids[i].randomForce*deltaTime);
+		
+			else
+			{
+				boids[i].addForce(boids[i].randomForce*deltaTime*(1.0f / 25.0f));
+			}
+		
 		}
+
 		for (int i = 0; i < 20; i++)
 			boids[i].moveBoids(boids, deltaTime);
 		if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
