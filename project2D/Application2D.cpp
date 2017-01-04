@@ -283,7 +283,11 @@ void Application2D::update(float deltaTime)
 		{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Player1.UpdateAcceleration((directionOfForce*DistanceFromMouse) *deltaTime);
+=======
+			Player1.UpdateAcceleration((directionOfForce*DistanceFromMouse) - (directionOfForce*(1 / DistanceFromMouse))*deltaTime);
+>>>>>>> parent of dfc767d... finishing up the boids program
 =======
 			Player1.UpdateAcceleration((directionOfForce*DistanceFromMouse) - (directionOfForce*(1 / DistanceFromMouse))*deltaTime);
 >>>>>>> parent of dfc767d... finishing up the boids program
