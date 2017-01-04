@@ -155,8 +155,7 @@ private:
 				if ((b[i].m_position - current.m_position).Magnitude() < 100)
 				{
 					addForce((b[i].m_position - current.m_position)*deltaTime*14.0f);
-					/* c =c-( b[i].m_position - current.m_position);
-					addForce(c*deltaTime);*/
+					
 					
 				}
 			}
