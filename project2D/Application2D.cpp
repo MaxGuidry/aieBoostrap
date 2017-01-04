@@ -70,6 +70,11 @@ bool Application2D::startup()
 	Player1.m_velocity = Vector2(0, 0);
 	Player1.m_acceleration = Vector2(0, 0);
 	test = 0;
+
+	for (int i = 0; i < 20; i++)
+	{
+		boids[i] = boid(Vector2(rand() % 1400, rand() % 900), Vector2(0, 0));
+	}
 	return true;
 }
 
@@ -266,37 +271,54 @@ void Application2D::update(float deltaTime)
 	//		}
 	//	}
 
-	Vector2 mousePosition = Vector2(input->getMouseX(), input->getMouseY());
-	Vector2 directionOfForce = (mousePosition - Player1.m_playerPosition);
-	float DistanceFromMouse = directionOfForce.Magnitude();
-	//Vector2 directionOfMovement = Vector2(1280 / 2, 720 / 2) - Player1.m_playerPosition;
-	directionOfForce = directionOfForce.Normalize();
-	
-	if (DistanceFromMouse <= 900.0f)
-	{
-		if (DistanceFromMouse < 15)
-		{
-			Player1.UpdateAcceleration(Player1.m_velocity*-deltaTime);
-			
-		}
-		else
-		{
-			Player1.UpdateAcceleration((directionOfForce*DistanceFromMouse) - (directionOfForce*(1 / DistanceFromMouse))*deltaTime);
-		}
-		Player1.UpdateVelocity(Player1.m_acceleration*deltaTime * 500);
 
-	}
+	//
+	//if (DistanceFromMouse <= 900.0f)
+	//{
+	//	if (DistanceFromMouse < 15)
+	//	{
+	//		Player1.UpdateAcceleration(Player1.m_velocity*-deltaTime);
+	//		
+	//	}
+	//	else
+	//	{
+	//		Player1.UpdateAcceleration((directionOfForce*DistanceFromMouse) - (directionOfForce*(1 / DistanceFromMouse))*deltaTime);
+	//	}
+	//	Player1.UpdateVelocity(Player1.m_acceleration*deltaTime * 500);
+
+	//}
+	//else
+	//{
+	//	Player1.UpdateAcceleration(directionOfForce*DistanceFromMouse*deltaTime);
+	//	Player1.UpdateVelocity(Player1.m_acceleration*deltaTime * 500);
+	//}
+
+	//Player1.UpdatePosition(Player1.m_velocity *deltaTime);
+
 	else
 	{
-		Player1.UpdateAcceleration(directionOfForce*DistanceFromMouse*deltaTime);
-		Player1.UpdateVelocity(Player1.m_acceleration*deltaTime * 500);
+		test += deltaTime;
+		Vector2 mousePosition = Vector2(input->getMouseX(), input->getMouseY());
+		for (int i = 0; i < 20; i++)
+		{
+			Vector2 directionOfForce = mousePosition - boids[i].getPosition();
+			float DistanceFromMouse = directionOfForce.Magnitude();
+			boids[i].addForce(directionOfForce.Normalize()*DistanceFromMouse*deltaTime);
+			if (test >= .5)
+			{
+				for (int i = 0; i < 20; i++)
+				{
+					boids[i].randomForce = Vector2((rand() % 500) - 250, (rand() % 500) - 250);
+				}
+				test = 0;
+			}
+			boids[i].addForce(boids[i].randomForce*deltaTime);
+		}
+		for (int i = 0; i < 20; i++)
+			boids[i].moveBoids(boids, deltaTime);
+		if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
+			quit();
 	}
-
-	Player1.UpdatePosition(Player1.m_velocity *deltaTime);
-
-	//} // You a hoe - Donray
-	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
-		quit();
 }
 
 void Application2D::draw()
@@ -401,6 +423,10 @@ void Application2D::draw()
 				m_2dRenderer->drawText(m_gameOverFont, won, 160, 200, 1);
 			}
 		}
+	}
+	for (int i = 0; i < 20; i++)
+	{
+		m_2dRenderer->drawCircle(boids[i].getPosition().x, boids[i].getPosition().y, 15, 0);
 	}
 	// done drawing sprites
 	m_2dRenderer->end();
