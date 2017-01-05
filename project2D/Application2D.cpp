@@ -143,7 +143,6 @@ void Application2D::update(float deltaTime)
 	//			m_GameOver = true;
 	//			m_lose = true;
 	//		}
-
 	//		for (int i = 0; i < m_MaxBullets; i++)
 	//		{
 	//			if (Magazine[i].m_isShooting == false)
@@ -182,7 +181,6 @@ void Application2D::update(float deltaTime)
 	//					Magazine[i].m_shootTimer += 16;
 	//			}
 	//		}
-
 	//		for (int i = 0; i < m_MaxBullets; i++)
 	//		{
 	//			if (Magazine[i].m_shootTimer > 720)
@@ -190,14 +188,11 @@ void Application2D::update(float deltaTime)
 	//				Magazine[i].m_isShooting = false;
 	//			}
 	//		}
-
 	//		if (Player1.m_isShooting == true)
 	//		{
-
 	//			for (int j = 0; j < m_MaxBullets; j++)
 	//			{
 	//				Magazine[j].position.y = 107 + Magazine[j].m_shootTimer;
-
 	//				for (int i = 0; i < numberOfEnemies; i++)
 	//				{
 	//					if ((Enemies[i].m_position.x - Enemies[i].m_width < Magazine[j].position.x - 5 && Enemies[i].m_position.x + Enemies[i].m_width > Magazine[j].position.x - 5
@@ -216,7 +211,6 @@ void Application2D::update(float deltaTime)
 	//		}
 	//		for (int i = 0; i < numberOfEnemies; i++)
 	//		{
-
 	//			if (Enemies[i].shot.position.y - 15 < Player1.m_playerPosition.y + m_shipTexture->getHeight() / 2 && Enemies[i].shot.position.x > Player1.m_playerPosition.x - m_shipTexture->getWidth() / 2 && Enemies[i].shot.position.x < Player1.m_playerPosition.x + m_shipTexture->getWidth() / 2)
 	//			{
 	//				m_GameOver = true;
@@ -230,7 +224,6 @@ void Application2D::update(float deltaTime)
 	//			m_GameOver = true;
 	//			m_winMusic->play();
 	//		}
-
 	//	}
 	//	else
 	//	{
@@ -250,7 +243,6 @@ void Application2D::update(float deltaTime)
 	//		*m_file << "Player position y: " << Player1.m_playerPosition.y << std::endl;
 	//		m_file->close();
 	//	}
-
 	//	for (int i = 0; i < numberOfEnemies; i++)
 	//	{
 	//		int random = rand() % 95;
@@ -270,8 +262,6 @@ void Application2D::update(float deltaTime)
 	//			//Enemies[i].shot.m_shootTimer -= 8;
 	//		}
 	//	}
-
-
 	//
 	//if (DistanceFromMouse <= 900.0f)
 	//{
@@ -285,17 +275,15 @@ void Application2D::update(float deltaTime)
 	//		Player1.UpdateAcceleration((directionOfForce*DistanceFromMouse) - (directionOfForce*(1 / DistanceFromMouse))*deltaTime);
 	//	}
 	//	Player1.UpdateVelocity(Player1.m_acceleration*deltaTime * 500);
-
 	//}
 	//else
 	//{
 	//	Player1.UpdateAcceleration(directionOfForce*DistanceFromMouse*deltaTime);
 	//	Player1.UpdateVelocity(Player1.m_acceleration*deltaTime * 500);
 	//}
-
 	//Player1.UpdatePosition(Player1.m_velocity *deltaTime);
 
-	else
+	/*else
 	{
 		test += deltaTime;
 		Vector2 mousePosition = Vector2(input->getMouseX(), input->getMouseY());
@@ -332,7 +320,7 @@ void Application2D::update(float deltaTime)
 			boids[i].moveBoids(boids, deltaTime);
 		if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 			quit();
-	}
+	}*/
 }
 
 void Application2D::draw()
@@ -346,6 +334,7 @@ void Application2D::draw()
 
 	// begin drawing sprites
 	m_2dRenderer->begin();
+	/*
 	if (gameStarted == false)
 	{
 		char impossible[15];
@@ -374,15 +363,7 @@ void Application2D::draw()
 			// demonstrate spinning sprite
 			m_2dRenderer->setUVRect(0, 0, 1, 1);
 			m_2dRenderer->drawSprite(m_shipTexture, Player1.m_playerPosition.x, Player1.m_playerPosition.y, 0, 0, 0, 1);
-			/*	m_2dRenderer->drawLine(
-					Player1.m_playerPosition.x, Player1.m_playerPosition.y,
-					Player1.m_playerPosition.x + Player1.m_velocity.x,
-					Player1.m_playerPosition.y + Player1.m_velocity.y,
-					1);
-				m_2dRenderer->drawLine(Player1.m_playerPosition.x, Player1.m_playerPosition.y,
-					Player1.m_playerPosition.x + Player1.m_acceleration.x * 50,
-					Player1.m_playerPosition.y + Player1.m_acceleration.y * 50,
-					1);*/
+			
 			m_2dRenderer->drawSprite(m_backgroundSpace, 620, 720 / 2, 1320, 720, 0, 1);
 			// output some text, uses the last used colour
 			char fps[32];
@@ -438,10 +419,12 @@ void Application2D::draw()
 			}
 		}
 	}
+	
 	for (int i = 0; i < 20; i++)
 	{
 		m_2dRenderer->drawCircle(boids[i].getPosition().x, boids[i].getPosition().y, 15, 0);
 	}
+	*/
 	// done drawing sprites
 	m_2dRenderer->end();
 }
