@@ -154,7 +154,7 @@ private:
 			{
 				if ((b[i].m_position - current.m_position).Magnitude() < 100)
 				{
-					addForce((b[i].m_position - current.m_position)*deltaTime*14.0f);
+					addForce((b[i].m_position - current.m_position)*deltaTime*12.0f);
 					
 					
 				}
@@ -192,7 +192,7 @@ private:
 	Vector2 m_position;
 	Vector2 m_velocity;
 	Vector2 m_forceapplied;
-	float m_maxVelo = 250;
+	float m_maxVelo = 300;
 	
 
 };

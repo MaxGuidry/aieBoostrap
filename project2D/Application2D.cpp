@@ -307,23 +307,23 @@ void Application2D::update(float deltaTime)
 				boids[i].addForce((directionOfForce.Normalize()*DistanceFromMouse) - (directionOfForce.Normalize()*(1 / DistanceFromMouse))*deltaTime);
 			else
 			{
-				boids[i].addForce((directionOfForce.Normalize()*DistanceFromMouse)*deltaTime);
+				boids[i].addForce((directionOfForce.Normalize()*DistanceFromMouse)*deltaTime*2.0f);
 			}
-			if (test >= .5)
+			if (test >= 1)
 			{
 				for (int i = 0; i < 20; i++)
 				{
-					if (DistanceFromMouse < 200)
-						boids[i].randomForce = Vector2((rand() % 5000) - 2500, (rand() % 5000) - 2500);
+
+						boids[i].randomForce = Vector2((2.0f)*(rand() % 500) - 250, (2.0f)*(rand() % 500) - 250);
 				}
 				test = 0;
 			}
-			if (DistanceFromMouse < 200)
+			if (DistanceFromMouse > 200)
 				boids[i].addForce(boids[i].randomForce*deltaTime);
 		
 			else
 			{
-				boids[i].addForce(boids[i].randomForce*deltaTime*(1.0f / 25.0f));
+				boids[i].addForce(boids[i].randomForce*deltaTime*(1.0f /10.0f));
 			}
 		
 		}
