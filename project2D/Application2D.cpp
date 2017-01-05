@@ -323,7 +323,7 @@ void Application2D::update(float deltaTime)
 		
 			else
 			{
-				boids[i].addForce(boids[i].randomForce*deltaTime*(1.0f /10.0f));
+				boids[i].addForce(boids[i].randomForce*deltaTime*(1.0f /2.0f));
 			}
 		
 		}
