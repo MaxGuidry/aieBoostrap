@@ -334,6 +334,8 @@ void Application2D::draw()
 
 	// begin drawing sprites
 	m_2dRenderer->begin();
+	//boids
+
 	/*
 	if (gameStarted == false)
 	{
@@ -424,7 +426,7 @@ void Application2D::draw()
 	{
 		m_2dRenderer->drawCircle(boids[i].getPosition().x, boids[i].getPosition().y, 15, 0);
 	}
-	*/
+	*/ //
 	// done drawing sprites
 	m_2dRenderer->end();
 }
