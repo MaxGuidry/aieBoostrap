@@ -283,7 +283,7 @@ void Application2D::update(float deltaTime)
 	//}
 	//Player1.UpdatePosition(Player1.m_velocity *deltaTime);
 
-	/*else
+	else
 	{
 		test += deltaTime;
 		Vector2 mousePosition = Vector2(input->getMouseX(), input->getMouseY());
@@ -320,7 +320,7 @@ void Application2D::update(float deltaTime)
 			boids[i].moveBoids(boids, deltaTime);
 		if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 			quit();
-	}*/
+	}
 }
 
 void Application2D::draw()
@@ -336,7 +336,7 @@ void Application2D::draw()
 	m_2dRenderer->begin();
 	//boids
 
-	/*
+	
 	if (gameStarted == false)
 	{
 		char impossible[15];
@@ -352,52 +352,52 @@ void Application2D::draw()
 		sprintf_s(hard, 10, "Hard");
 		m_2dRenderer->drawText(m_font, hard, 600, 150);
 	}
-	else
-	{
+	//else
+	//{
 
-		if (m_GameOver == false)
-		{
-			for (int i = 0; i < numberOfEnemies; i++)
-			{
-				m_2dRenderer->drawSprite(m_enemyship, Enemies[i].m_position.x, 600, Enemies[i].m_height + 10, Enemies[i].m_width + 20, 0, 0);
+	//	if (m_GameOver == false)
+	//	{
+	//		for (int i = 0; i < numberOfEnemies; i++)
+	//		{
+	//			m_2dRenderer->drawSprite(m_enemyship, Enemies[i].m_position.x, 600, Enemies[i].m_height + 10, Enemies[i].m_width + 20, 0, 0);
 
-			}
-			// demonstrate spinning sprite
-			m_2dRenderer->setUVRect(0, 0, 1, 1);
-			m_2dRenderer->drawSprite(m_shipTexture, Player1.m_playerPosition.x, Player1.m_playerPosition.y, 0, 0, 0, 1);
-			
-			m_2dRenderer->drawSprite(m_backgroundSpace, 620, 720 / 2, 1320, 720, 0, 1);
-			// output some text, uses the last used colour
-			char fps[32];
-			sprintf_s(fps, 32, "FPS: %i", getFPS());
-			m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
-			char KillBuffer[32];
-			sprintf_s(KillBuffer, 32, "Kill Count: %i", Player1.m_killCount);
-			m_2dRenderer->drawText(m_font, KillBuffer, 0, 720 - 64);
-			for (int i = 0; i < m_MaxBullets; i++)
-			{
+	//		}
+	//		// demonstrate spinning sprite
+	//		m_2dRenderer->setUVRect(0, 0, 1, 1);
+	//		m_2dRenderer->drawSprite(m_shipTexture, Player1.m_playerPosition.x, Player1.m_playerPosition.y, 0, 0, 0, 1);
+	//		
+	//		m_2dRenderer->drawSprite(m_backgroundSpace, 620, 720 / 2, 1320, 720, 0, 1);
+	//		// output some text, uses the last used colour
+	//		char fps[32];
+	//		sprintf_s(fps, 32, "FPS: %i", getFPS());
+	//		m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
+	//		char KillBuffer[32];
+	//		sprintf_s(KillBuffer, 32, "Kill Count: %i", Player1.m_killCount);
+	//		m_2dRenderer->drawText(m_font, KillBuffer, 0, 720 - 64);
+	//		for (int i = 0; i < m_MaxBullets; i++)
+	//		{
 
-				if (Magazine[i].m_isShooting == true)
-				{
-					m_2dRenderer->setRenderColour(0, 1, 0, 1);
-					m_2dRenderer->drawBox(Magazine[i].position.x, 91 + Magazine[i].m_shootTimer, 5, 30, 0, 0);
-				}
-			}
-			for (int i = 0; i < numberOfEnemies; i++)
-			{
+	//			if (Magazine[i].m_isShooting == true)
+	//			{
+	//				m_2dRenderer->setRenderColour(0, 1, 0, 1);
+	//				m_2dRenderer->drawBox(Magazine[i].position.x, 91 + Magazine[i].m_shootTimer, 5, 30, 0, 0);
+	//			}
+	//		}
+	//		for (int i = 0; i < numberOfEnemies; i++)
+	//		{
 
-				if (Enemies[i].shot.m_isShooting == true)
-				{
-					m_2dRenderer->setRenderColour(1, 0, 0, 1);
-					m_2dRenderer->drawBox(Enemies[i].m_position.x, Enemies[i].shot.position.y, 5, 30, 0, 0);
-				}
-			}
-			m_2dRenderer->setRenderColour(1, 1, 1, 1);
-			char timer[15];
-			sprintf_s(timer, 15, "Time Left: %i", m_GameTimer);
-			m_2dRenderer->drawText(m_font, timer, 1280 / 2 - 180, 680);
+	//			if (Enemies[i].shot.m_isShooting == true)
+	//			{
+	//				m_2dRenderer->setRenderColour(1, 0, 0, 1);
+	//				m_2dRenderer->drawBox(Enemies[i].m_position.x, Enemies[i].shot.position.y, 5, 30, 0, 0);
+	//			}
+	//		}
+	//		m_2dRenderer->setRenderColour(1, 1, 1, 1);
+	//		char timer[15];
+	//		sprintf_s(timer, 15, "Time Left: %i", m_GameTimer);
+	//		m_2dRenderer->drawText(m_font, timer, 1280 / 2 - 180, 680);
 
-		}
+	//	}
 		else
 		{
 			this->setBackgroundColour(0, 0, 0, 1);
@@ -420,13 +420,12 @@ void Application2D::draw()
 				m_2dRenderer->drawText(m_gameOverFont, won, 160, 200, 1);
 			}
 		}
-	}
 	
-	for (int i = 0; i < 20; i++)
+	
+	for(int i = 0; i < 20; i++)
 	{
 		m_2dRenderer->drawCircle(boids[i].getPosition().x, boids[i].getPosition().y, 15, 0);
-	}
-	*/ //
+	} //
 	// done drawing sprites
 	m_2dRenderer->end();
 }
